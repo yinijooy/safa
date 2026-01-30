@@ -1,258 +1,151 @@
 ---
 name: generate-next-step
-description: reports/ 폴더의 모든 파일을 누적 참조하여 다음 단계 노트북을 생성합니다. "다음 단계", "노트북 만들어줘" 요청 시 사용합니다.
+description: reports/ 폴더를 참조하여 다음 단계 노트북을 생성합니다.
 ---
 
-# 다음 단계 코드 생성 (generate-next-step)
+# 다음 단계 노트북 생성 (generate-next-step)
 
-## 목적
+## 동작 순서
 
-`reports/` 폴더의 **모든 파일을 누적 참조**하여 다음 단계 노트북을 생성합니다.
-
----
-
-## 핵심: reports/ 폴더 누적 참조
-
-### 파일 구조
-
-```
-reports/
-├── preprocessing_guide.md      ← ① 항상 참조 (전처리 가이드)
-├── stats.md                    ← ② 항상 참조 (통계 분석 가이드)
-├── pipeline_context.json       ← ③ 현재 상태 (current_step)
-├── step1_scan.json             ← ④ Step 1 결과
-├── step2_preprocess.json       ← ⑤ Step 2 결과 (있으면)
-├── step3_viz.json              ← ⑥ Step 3 결과 (있으면)
-└── step4_state.json            ← ⑦ Step 4 결과 (있으면)
-```
-
-### AI Agent 동작 방식
-
-```
-1. reports/preprocessing_guide.md 읽음 (전처리 로직)
-2. reports/stats.md 읽음 (통계 분석 방법론)
-3. reports/pipeline_context.json 읽음 (current_step 확인)
-4. reports/step*.json 파일들 모두 읽음 (이전 결과들)
-5. 모든 정보 종합하여 다음 노트북 생성
-```
+1. `reports/pipeline_context.json` → `current_step` 확인
+2. 해당 step의 참조 파일 읽기
+3. 노트북 생성
 
 ---
 
-## 파이프라인 구조 (4 Steps)
+## 파이프라인 (3 Steps)
 
-| current_step | 참조할 파일 | 생성할 노트북 |
-|--------------|-------------|--------------|
-| `"preprocess"` | preprocessing_guide.md + step1_scan.json | 02_preprocessing.ipynb |
-| `"viz"` | 위 + step2_preprocess.json | 03_visualization.ipynb |
-| `"state_analysis"` | 위 + stats.md + step3_viz.json | 04_state_analysis.ipynb |
-| `"done"` | - | 완료 메시지 |
+| current_step | 생성할 노트북 | 참조 파일 |
+|--------------|--------------|----------|
+| `preprocess` | 02_preprocessing.ipynb | preprocessing_guide.md, step1_scan.json |
+| `viz` | 03_visualization.ipynb | step2_preprocess.json |
+| `state_analysis` | 04_state_analysis.ipynb | stats.md, step2_preprocess.json |
 
 ---
 
-## Step별 생성 규칙
+## Step 2: Preprocessing (02_preprocessing.ipynb)
 
-### Step 2 (Preprocessing) 생성 시
+### 목표
+- QC (품질 관리)
+- Big Five + Ideology + Honesty-Humility 점수 계산
 
-**참조 파일:**
-- `preprocessing_guide.md` - 점수 계산 공식
-- `step1_scan.json` - n_respondents, avg_responses
+### 필수 분석
 
-**step1_scan.json에서 가져올 정보:**
-```python
-with open('reports/step1_scan.json', 'r') as f:
-    step1 = json.load(f)
+**1. QC (Quality Control)**
+- 응답 부족: `MIN_RESPONSES = 10` (고정값)
+- Straight-lining: 모든 응답이 동일한 값인 경우 제외
+- **결과 출력**: 제외된 인원 수, 유효 응답자 수
 
-avg_responses = step1['results']['avg_responses']  # 86
-MIN_RESPONSES = max(10, int(avg_responses * 0.1))  # 10
+**2. Big Five 점수 계산**
+- `superKey696.csv`에서 각 척도(NEO_O, NEO_C, NEO_E, NEO_A, NEO_N)의 문항 추출
+- 역채점: key값이 -1인 문항은 `7 - 원점수`
+- 척도 점수 = 해당 문항들의 평균
+- **결과 출력**: 각 척도별 유효 N, Mean, SD
+
+**3. Ideology 점수 계산**
+- `Ideology = mean(z(MPQtr), z(NEOo6) * -1)`
+- z-score 변환 후 평균
+- **결과 출력**: 유효 N, Mean, SD
+
+**4. Honesty-Humility 점수 계산**
+- `Honesty_Humility = mean(z(NEOa2), z(NEOa4), z(HEXACO_H))`
+- z-score 변환 후 평균
+- **결과 출력**: 유효 N, Mean, SD
+
+**5. 저장**
+- `data/processed/sapa_scores.csv`에 RID + 7개 척도 저장
+
+### 필수 출력 형식
+
 ```
+=== QC 결과 ===
+응답 부족 (10개 미만): N명
+Straight-lining: N명
+제외 합계: N명
+유효 응답자: N명
 
-**생성할 내용:**
-- QC 기준: step1 결과 기반
-- 점수 계산: preprocessing_guide.md 공식
-- Big Five + Ideology + Honesty-Humility
-
-### Step 3 (Visualization) 생성 시
-
-**참조 파일:**
-- `step1_scan.json` - 기본 정보
-- `step2_preprocess.json` - 계산된 척도 목록, output_file
-
-**step2_preprocess.json에서 가져올 정보:**
-```python
-with open('reports/step2_preprocess.json', 'r') as f:
-    step2 = json.load(f)
-
-scales = step2['results']['scores']['calculated_scales']
-scores_file = step2['results']['scores']['output_file']
-```
-
-**생성할 내용:**
-- 상관행렬 (7개 척도)
-- 분포 히스토그램
-- 박스플롯
-
-### Step 4 (State Analysis) 생성 시
-
-**참조 파일:**
-- `stats.md` - 통계 분석 방법론 (Critical Ratios, ANOVA 등)
-- `step2_preprocess.json` - 계산된 척도, 점수 파일 경로
-- `step3_viz.json` - 시각화 결과
-
-**stats.md에서 참조할 분석 방법:**
-- Critical Ratios: |z|/se > 3.0 기준으로 유의미한 특징 판별
-- ANOVA: State 간 성격 점수 차이 검정
-- (논문 축소 버전: County-Composites 대신 State 수준 분석)
-
-**필요한 데이터:**
-```python
-# 원본 데이터에서 state 변수 로드
-data = pd.read_csv('data/raw/sapa_data.csv')
-scores = pd.read_csv('data/processed/sapa_scores.csv')
-
-# state 변수: CA, FL, IL, MI, NY, PA, TX, VA, WA, other
-# demographic codes.txt 참조
-```
-
-**생성할 내용:**
-1. State 변수 확인 및 분포
-2. State별 성격 점수 기술통계 (Mean, SE)
-3. ANOVA 분석 (State 간 차이 검정)
-4. Critical Ratios 계산 (|Mean|/SE > 3.0)
-5. State별 성격 프로필 시각화 (박스플롯, 히트맵)
-
-**코드 템플릿:**
-```python
-# State별 기술통계
-state_stats = scores.merge(data[['RID', 'state']], on='RID')
-state_summary = state_stats.groupby('state')[scales].agg(['mean', 'std', 'count'])
-
-# Standard Error 계산
-for scale in scales:
-    state_summary[(scale, 'se')] = state_summary[(scale, 'std')] / np.sqrt(state_summary[(scale, 'count')])
-
-# Critical Ratio 계산
-for scale in scales:
-    state_summary[(scale, 'cr')] = abs(state_summary[(scale, 'mean')]) / state_summary[(scale, 'se')]
-    
-# 유의미한 특징 (|CR| > 3.0)
-significant = state_summary.xs('cr', axis=1, level=1) > 3.0
+=== 점수 계산 결과 ===
+NEO_O: N=12345, M=4.31, SD=0.83
+NEO_C: N=12345, M=4.23, SD=0.86
+...
+Ideology: N=12345, M=0.03, SD=0.97
+Honesty_Humility: N=12345, M=-0.01, SD=0.73
 ```
 
 ---
 
-## 노트북 시작 부분 템플릿
+## Step 3: Visualization (03_visualization.ipynb)
 
-```python
-import pandas as pd
-import numpy as np
-import json
-import os
-from glob import glob
+### 목표
+- 7개 척도의 분포 및 상관관계 시각화
 
-# 작업 디렉토리 설정
-if os.path.basename(os.getcwd()) == 'notebooks':
-    os.chdir('..')
+### 필수 분석
 
-# reports/ 폴더의 모든 JSON 파일 로드
-print("=== 참조할 Context 파일들 ===")
-for f in sorted(glob('reports/*.json')):
-    print(f"  - {f}")
+**1. 상관행렬**
+- 7개 척도 간 상관 히트맵
+- pairwise N 표시 (결측으로 인한 N 차이)
 
-# 이전 단계 결과 로드
-if os.path.exists('reports/step1_scan.json'):
-    with open('reports/step1_scan.json', 'r', encoding='utf-8') as f:
-        step1 = json.load(f)
-    print(f"\nStep 1 결과: {step1['results']}")
+**2. 분포**
+- Big Five: 히스토그램 (1-6점 범위)
+- Ideology, Honesty-Humility: 히스토그램 (z-score, 0 기준선)
 
-if os.path.exists('reports/step2_preprocess.json'):
-    with open('reports/step2_preprocess.json', 'r', encoding='utf-8') as f:
-        step2 = json.load(f)
-    print(f"\nStep 2 결과: {step2['results']['scores']['calculated_scales']}")
-```
+**3. 저장**
+- PNG 파일로 저장
 
 ---
 
-## 코드 스타일 규칙
+## Step 4: State Analysis (04_state_analysis.ipynb)
 
-```python
-# 1. 상대 경로만 사용
-df = pd.read_csv('data/raw/sapa_data.csv')
+### 목표
+- Lanning et al. (2022) 논문의 **State 수준 축소 재현**
+- Critical Ratios로 각 State의 유의미한 성격 특징 도출
 
-# 2. 이전 step 결과 참조
-with open('reports/step1_scan.json', 'r') as f:
-    step1 = json.load(f)
-n_respondents = step1['results']['n_respondents']
+### 필수 분석 (논문 재현)
 
-# 3. 한글 주석
-# Step 1 결과에서 평균 응답 수 가져오기
+**1. 데이터 준비**
+- `sapa_data.csv`에서 state 변수 로드
+- `sapa_scores.csv`와 병합
+- **"other" 제외** (9개 주만 분석: CA, FL, IL, MI, NY, PA, TX, VA, WA)
 
-# 4. 진행 상황 출력
-print(f'✅ 이전 단계에서 {n_respondents:,}명 데이터 확인됨')
+**2. State별 기술통계**
+- 각 State × 척도별: N, Mean, SE
+- SE = SD / sqrt(N)
+
+**3. Critical Ratios 계산 (핵심)**
+- `CR = (State Mean - Grand Mean) / SE`
+- **|CR| > 3.0 → 유의미한 특징** (p < .003)
+
+**4. 결과 출력 (필수 형식)**
+
 ```
+=== State별 표본 수 ===
+California: 1,713명
+Michigan: 860명
+...
+
+=== 유의미한 특징 (|CR| > 3.0) ===
+Michigan  | Honesty_Humility | CR=+4.31 | 높음
+California | Ideology        | CR=-3.11 | 낮음
+...
+
+=== State 성격 프로필 요약 ===
+Michigan: 정직-겸손↑, 우호성↑, 개방성↓
+California: 정직-겸손↓, Ideology↓ (진보적)
+New York: 개방성↑
+Illinois: 외향성↑
+Florida: 신경증↓ (정서적 안정)
+```
+
+### 불필요한 분석 (제외)
+- ~~ANOVA~~ (논문에서 사용하지 않음)
+- ~~효과 크기 (eta-squared)~~
 
 ---
 
-## 노트북 구조 규칙
+## 노트북 공통 규칙
 
-```
-[Cell 0] Markdown: 제목 + 학습 목표 + 참조 파일 목록
-[Cell 1] Code: %pip install
-[Cell 2] Code: import + reports/*.json 로드
-[Cell 3~N] Code/Markdown: 본문
-[마지막 Cell] Code: 새 step JSON 파일 저장
-```
-
----
-
-## AI Agent 체크리스트
-
-노트북 생성 전 확인:
-
-- [ ] `reports/preprocessing_guide.md` 읽었는가?
-- [ ] `reports/stats.md` 읽었는가? (Step 4용)
-- [ ] `reports/pipeline_context.json`에서 current_step 확인했는가?
-- [ ] `reports/step*.json` 파일들 모두 확인했는가?
-- [ ] 이전 step 결과를 코드에서 참조하는가?
-- [ ] 마지막 셀에 새 step JSON 저장 코드 있는가?
-
----
-
-## 사용 예시
-
-### 예시 1: Step 2 생성
-```
-사용자: "다음 단계 만들어줘"
-
-AI Agent:
-1. reports/ 폴더 스캔
-   - preprocessing_guide.md ✓
-   - pipeline_context.json → current_step: "preprocess"
-   - step1_scan.json ✓ (avg_responses: 86)
-   
-2. 02_preprocessing.ipynb 생성
-   - step1_scan.json 참조하여 QC 기준 설정
-   - preprocessing_guide.md 참조하여 점수 계산
-   
-3. 마지막 셀: step2_preprocess.json 저장 코드 포함
-```
-
-### 예시 2: Step 4 (State Analysis) 생성
-```
-사용자: "다음 단계 만들어줘"
-
-AI Agent:
-1. reports/ 폴더 스캔
-   - preprocessing_guide.md ✓
-   - stats.md ✓ (통계 분석 방법론)
-   - pipeline_context.json → current_step: "state_analysis"
-   - step1_scan.json ✓
-   - step2_preprocess.json ✓ (7개 척도)
-   - step3_viz.json ✓
-   
-2. 04_state_analysis.ipynb 생성
-   - stats.md의 Critical Ratios 방법론 적용
-   - State별 (9개 주 + other) 성격 점수 비교
-   - ANOVA + Critical Ratio 분석
-   
-3. 마지막 셀: step4_state.json 저장 코드 포함
-```
+1. **첫 셀**: `%pip install pandas numpy matplotlib seaborn -q`
+2. **작업 디렉토리**: notebooks에서 실행 시 상위로 이동
+3. **상대 경로만 사용**: `data/raw/`, `reports/`
+4. **결과는 반드시 위 형식대로 출력**
+5. **마지막 셀**: step JSON 저장 + pipeline_context.json 업데이트

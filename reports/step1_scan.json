@@ -1,7 +1,7 @@
 {
   "step": "scan",
   "notebook": "01_data_scan.ipynb",
-  "timestamp": "2024-12-19",
+  "timestamp": "2025-02-02",
   "data_overview": {
     "data_shape": [23679, 719],
     "n_respondents": 23679,

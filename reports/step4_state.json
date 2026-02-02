@@ -1,24 +1,14 @@
 {
   "step": "state_analysis",
   "notebook": "04_state_analysis.ipynb",
-  "analysis_summary": {
+  "timestamp": "2025-02-02",
+  "analysis_scope": {
     "n_states": 9,
-    "n_respondents": 7308,
-    "n_scales": 7,
-    "min_n_threshold": 100
+    "valid_states": ["California", "Michigan", "Illinois", "Texas", "Pennsylvania", "Florida", "New York", "Washington", "Virginia"],
+    "total_n": 7308,
+    "excluded": "other (international participants)"
   },
-  "states_analyzed": [
-    "California",
-    "Michigan",
-    "Illinois",
-    "Texas",
-    "Pennsylvania",
-    "Florida",
-    "New York",
-    "Washington",
-    "Virginia"
-  ],
-  "state_n": {
+  "state_sample_sizes": {
     "California": 1713,
     "Michigan": 860,
     "Illinois": 820,
@@ -29,91 +19,83 @@
     "Washington": 599,
     "Virginia": 525
   },
-  "grand_means": {
-    "O": 4.275382211031184,
-    "C": 4.294257775523954,
-    "E": 3.95334257682636,
-    "A": 4.290150404651006,
-    "N": 3.32121281217153,
-    "Ideology": 0.11908187338052856,
-    "H-H": 0.06337256471239115
+  "critical_ratio_method": {
+    "formula": "CR = (State Mean - Grand Mean) / SE",
+    "threshold": 3.0,
+    "significance": "p < .003"
   },
   "significant_features": [
     {
       "state": "Michigan",
       "scale": "H-H",
-      "n": 463,
-      "mean": 0.20139649498902557,
-      "se": 0.032055698109047244,
-      "cr": 4.305753373615632,
-      "significant": true
+      "cr": 4.31,
+      "direction": "higher",
+      "interpretation": "Honesty-Humility significantly higher"
     },
     {
       "state": "New York",
       "scale": "O",
-      "n": 680,
-      "mean": 4.394886325939412,
-      "se": 0.030880440350201807,
-      "cr": 3.8698967227469248,
-      "significant": true
+      "cr": 3.87,
+      "direction": "higher",
+      "interpretation": "Openness significantly higher"
     },
     {
       "state": "Illinois",
       "scale": "E",
-      "n": 812,
-      "mean": 4.069677421973736,
-      "se": 0.031831658078393575,
-      "cr": 3.65469008434534,
-      "significant": true
+      "cr": 3.65,
+      "direction": "higher",
+      "interpretation": "Extraversion significantly higher"
     },
     {
       "state": "Michigan",
       "scale": "A",
-      "n": 856,
-      "mean": 4.380044868265171,
-      "se": 0.026907905473208656,
-      "cr": 3.340819808649545,
-      "significant": true
-    },
-    {
-      "state": "Florida",
-      "scale": "N",
-      "n": 691,
-      "mean": 3.1964524496735796,
-      "se": 0.03871745667516772,
-      "cr": -3.222328458831034,
-      "significant": true
+      "cr": 3.34,
+      "direction": "higher",
+      "interpretation": "Agreeableness significantly higher"
     },
     {
       "state": "Michigan",
       "scale": "O",
-      "n": 850,
-      "mean": 4.1858354082737685,
-      "se": 0.027824937972388053,
-      "cr": -3.218221109649082,
-      "significant": true
+      "cr": -3.22,
+      "direction": "lower",
+      "interpretation": "Openness significantly lower"
+    },
+    {
+      "state": "Florida",
+      "scale": "N",
+      "cr": -3.22,
+      "direction": "lower",
+      "interpretation": "Neuroticism significantly lower"
     },
     {
       "state": "California",
       "scale": "H-H",
-      "n": 959,
-      "mean": -0.009005962646098436,
-      "se": 0.022562582038047167,
-      "cr": -3.2079009058643218,
-      "significant": true
+      "cr": -3.21,
+      "direction": "lower",
+      "interpretation": "Honesty-Humility significantly lower"
     },
     {
       "state": "California",
       "scale": "Ideology",
-      "n": 836,
-      "mean": 0.016976690016913508,
-      "se": 0.03288191377915,
-      "cr": -3.1052080499146197,
-      "significant": true
+      "cr": -3.11,
+      "direction": "lower",
+      "interpretation": "More liberal (lower conservative score)"
     }
   ],
-  "n_significant_features": 8,
-  "figures_generated": [
-    "reports/figures/state_critical_ratios_heatmap.png"
+  "n_significant": 8,
+  "figures": [
+    {
+      "path": "reports/figures/state_critical_ratios_heatmap.png",
+      "description": "State × Scale CR 히트맵 (|CR| > 3.0 강조)"
+    }
+  ],
+  "key_findings": [
+    "9개 주, 7,308명 분석 (other 제외)",
+    "총 8개의 유의미한 특징 (|CR| > 3.0)",
+    "Michigan: H-H↑, A↑, O↓ (가장 많은 유의미한 특징)",
+    "New York: O↑ (개방성 높음)",
+    "Illinois: E↑ (외향성 높음)",
+    "Florida: N↓ (신경증 낮음 = 정서적 안정)",
+    "California: H-H↓, Ideology↓ (진보적 성향)"
   ]
 }

@@ -1,251 +1,205 @@
 # 프루프리딩 보고서
 
 ## 문서 정보
-- **파일:** `reports/step5_draft_method.md`, `reports/step5_draft_results.md`
-- **검토일:** 2024-12-19
-- **검토 기준:** Nature 리뷰어 관점, APA 7th Edition
+- **검토 대상:** `step5_draft_method.md`, `step5_draft_results.md`
+- **검토일:** 2025-02-02
 
 ---
 
 ## 1. Methods 평가 결과
 
-### 1. Reproducibility (재현성)
+### 1.1 Reproducibility (재현성)
+
+**현재 상태:** 양호
+
+**강점:**
+- 소프트웨어 버전 명시 (Python 3.11, pandas, numpy, scipy)
+- QC 기준 구체적 (10개 미만 응답, straight-lining)
+- 계산 공식 제시 (Ideology, H-H, CR)
 
 **구체적 문제점:**
-- Python 버전 및 주요 라이브러리 버전 정보가 명시되지 않음
-- 랜덤 시드 설정 여부가 불명확 (planned missingness에서 무작위 선택 시)
-- 데이터 파일 경로 및 접근 방법이 구체적으로 기술되지 않음
-- 코드 공개 여부 또는 재현 가능성에 대한 언급 없음
+- 데이터 수집 기간 미기재
+- 코드/데이터 공개 URL 미기재
+- 랜덤 시드 미기재 (해당 시 필요)
 
 **리뷰어 예상 질문:**
-- "저자들은 독자들이 이 분석을 재현할 수 있도록 어떤 정보를 제공했는가?"
-- "랜덤 샘플링 과정에서 재현성을 보장하기 위해 시드를 설정했는가?"
-- "분석 코드와 데이터가 공개되어 있는가?"
+- "데이터는 언제 수집되었는가?"
+- "분석 코드를 어디서 확인할 수 있는가?"
 
 **개선 방안:**
-- Python 버전 및 주요 패키지 버전 명시 (예: "Python 3.9, pandas 1.5.0, scipy 1.9.0")
-- 데이터 파일 경로 명시 (예: "Data files are available at [repository URL]")
-- 코드 공개 여부 명시 (예: "Analysis code is available at [GitHub repository]")
-- Planned missingness에서 무작위 선택 시 시드 설정 여부 명시
+- 데이터 수집 기간 추가 (예: "between 2013 and 2017")
+- 코드 공개 여부 명시 (예: "Analysis code is available at [URL]")
 
 ---
 
-### 2. Controls (통제)
+### 1.2 Controls (통제)
+
+**현재 상태:** 양호
+
+**강점:**
+- Limitations 섹션에서 온라인 샘플 대표성 한계 인정
+- QC 절차로 저품질 응답 제외
 
 **구체적 문제점:**
-- 대조군 또는 비교 기준이 명확하지 않음 (state-level 분석에서)
-- 선택 편향 가능성에 대한 언급 없음 (온라인 샘플의 특성)
-- 혼란변수 통제 방법이 기술되지 않음
-- 배치 효과나 시간적 변화에 대한 통제 없음
+- 자기선택 편향(self-selection bias) 명시적 언급 부족
+- 인구통계적 특성 기술 없음 (성별, 연령 분포 등)
 
 **리뷰어 예상 질문:**
-- "온라인 샘플의 대표성 문제를 어떻게 다루었는가?"
-- "State-level 분석에서 다른 주와 비교할 때 혼란변수(인구통계학적 특성 등)를 통제했는가?"
-- "데이터 수집 기간 동안 시간적 변화나 배치 효과가 있었는가?"
+- "참가자의 인구통계적 특성은 어떠한가?"
+- "온라인 참가자들이 일반 인구와 어떻게 다를 수 있는가?"
 
 **개선 방안:**
-- 온라인 샘플의 특성 및 제한점 명시
-- State-level 분석에서 인구통계학적 변수 통제 여부 명시
-- Grand mean을 비교 기준으로 사용한 이유 명확화
-- 데이터 수집 기간 및 시간적 변화 가능성 언급
+- 인구통계적 기술통계 추가 (Table 또는 텍스트)
+- self-selection bias 명시적 언급
 
 ---
 
-### 3. Sample size/power (샘플/검정력)
+### 1.3 Sample size/power (샘플/검정력)
+
+**현재 상태:** 양호
+
+**강점:**
+- 최소 N=100 기준과 근거 (SE < 0.1) 제시
+- 다중 비교 보정 설명 (63 comparisons, |CR| > 3.0)
 
 **구체적 문제점:**
-- 사전 검정력 분석이 보고되지 않음
-- State-level 분석에서 최소 N=100 기준의 근거가 불명확
-- 다중 비교 보정에 대한 명시적 언급 없음 (7개 척도 × 9개 주 = 63개 비교)
-- 효과 크기(effect size) 보고 없음
+- 사전/사후 검정력 분석 없음
+- 효과 크기 해석 기준 미제시
 
 **리뷰어 예상 질문:**
-- "최소 N=100 기준을 선택한 통계적 근거는 무엇인가?"
-- "7개 척도 × 9개 주 = 63개 비교에 대해 다중 비교 보정을 적용했는가?"
-- "검정력 분석을 통해 적절한 표본 크기를 결정했는가?"
+- "이 표본 크기로 어느 정도의 효과 크기를 검출할 수 있는가?"
 
 **개선 방안:**
-- 최소 N=100 기준 선택 근거 명시 (예: "to ensure stable estimates with SE < 0.1")
-- 다중 비교 보정 방법 명시 (예: "Bonferroni correction" 또는 "CR > 3.0 provides conservative control")
-- 효과 크기 보고 추가 (예: Cohen's d 또는 다른 적절한 지표)
-- 검정력 분석 결과 또는 선행 연구 기반 근거 제시
+- 사후 검정력 분석 추가 (선택적)
+- 또는 "검정력 분석은 수행하지 않았으나, 대규모 표본으로 인해 작은 효과도 검출 가능" 명시
 
 ---
 
-### 4. Statistical appropriateness (통계 적절성)
+### 1.4 Statistical appropriateness (통계 적절성)
+
+**현재 상태:** 양호
+
+**강점:**
+- CR 공식 및 유의성 기준 명확
+- 다중 비교 보정 (|CR| > 3.0, p < .003)
 
 **구체적 문제점:**
-- CR > 3.0 기준의 통계적 근거가 약함 (p < .003 언급만 있음)
-- 정규성 가정 검증 여부 불명확
-- 상관분석에서 pairwise deletion 사용 시 편향 가능성 언급 없음
-- z-score 계산 시 결측치 처리 방법이 불명확
+- 정규성 가정 검토 미언급
+- 상관계수의 p값 보고 기준 미명시
 
 **리뷰어 예상 질문:**
-- "CR > 3.0 기준이 다중 비교를 적절히 통제하는가?"
-- "상관분석에서 pairwise deletion이 결과에 미치는 영향을 평가했는가?"
-- "z-score 계산 시 결측치가 포함된 경우를 어떻게 처리했는가?"
+- "정규성 가정은 검토했는가?"
 
 **개선 방안:**
-- CR > 3.0 기준의 통계적 근거 강화 (예: "corresponds to p < .003 under normal approximation, providing conservative control for 63 comparisons")
-- 상관분석에서 pairwise N 보고 및 편향 가능성 논의
-- 결측치 처리 방법 명확화 (예: "only participants with complete data on all components")
-- 정규성 가정 검증 또는 비모수적 대안 고려 여부 명시
+- "Given the large sample size, we relied on the central limit theorem for normal approximation" 추가
 
 ---
 
-### 5. Validation (타당성)
+### 1.5 Validation (타당성)
+
+**현재 상태:** 보통
 
 **구체적 문제점:**
-- 척도의 내적 일관성(Cronbach's α) 보고 없음
-- 구성 타당도 검증 없음
-- 외부 검증 또는 교차 검증 없음
-- State-level 분석의 일반화 가능성에 대한 논의 부족
+- 척도 신뢰도(Cronbach's α) 미보고
+- 복합 척도(Ideology, H-H)의 타당성 근거 부족
 
 **리뷰어 예상 질문:**
-- "각 척도의 신뢰도는 얼마인가?"
-- "State-level 패턴이 다른 시점이나 다른 샘플에서도 재현되는가?"
-- "이 결과를 다른 국가나 지역에 일반화할 수 있는가?"
+- "척도의 신뢰도는 어떠한가?"
+- "Ideology 계산식의 타당성 근거는?"
 
 **개선 방안:**
-- 각 척도의 내적 일관성 계수 보고 (Cronbach's α)
-- 구성 타당도 검증 결과 제시 (예: 상관행렬, 요인 분석)
-- State-level 결과의 일반화 가능성 및 제한점 명시
-- 외부 검증 가능성 또는 향후 연구 방향 제시
+- 신뢰도 보고 추가 (또는 기존 문헌 인용)
+- 복합 척도 계산식의 출처 인용 (예: Lanning et al., 2022)
 
 ---
 
 ## 2. Results 평가 결과
 
-### 문장별 분석
+### 2.1 문장별 분석
 
-| # | 원문 | Claim Type | Evidence Level | Risk (1-10) | Conservative Alternative |
-|---|------|------------|----------------|-------------|--------------------------|
-| 1 | "suggesting substantial conceptual overlap between these constructs" | General | Indirect | 4 | "suggesting substantial conceptual overlap between these constructs" (적절) |
-| 2 | "indicating that individuals higher in openness tend to hold more progressive (less conservative) ideological views" | Correlational | Direct | 3 | "indicating that openness is associated with more progressive ideological views" (약간 완화) |
-| 3 | "These patterns align with theoretical expectations" | General | Indirect | 2 | "These patterns are consistent with theoretical expectations" (약간 완화) |
-| 4 | "suggesting greater emotional stability" | Correlational | Indirect | 5 | "suggesting lower neuroticism scores, which may reflect greater emotional stability" (더 명확) |
-| 5 | "indicating lower scores on these conservative-leaning measures" | General | Direct | 2 | "indicating lower scores on these measures" (적절) |
-| 6 | "These findings suggest meaningful regional variation in personality traits that may reflect cultural, economic, or historical factors" | Correlational | Suggestive | 7 | "These findings suggest regional variation in personality traits that could potentially reflect cultural, economic, or historical factors" (더 보수적) |
+| # | 원문 | Claim Type | Evidence | Risk | 수정 필요 |
+|---|------|------------|----------|------|-----------|
+| 1 | "Sample sizes varied across scales due to the planned missingness design" | General | Direct | 1 | 없음 |
+| 2 | "suggesting a strong positive association that may reflect conceptual overlap" | Correlational | Direct | 3 | 없음 (적절한 hedging) |
+| 3 | "indicating that openness is associated with more progressive ideological views" | Correlational | Direct | 2 | 없음 |
+| 4 | "These patterns are consistent with theoretical expectations" | General | Indirect | 2 | 없음 |
+| 5 | "suggesting lower levels of emotional instability in this sample" | Correlational | Indirect | 5 | 권장 |
+| 6 | "indicating more progressive ideological orientation" | Correlational | Direct | 3 | 없음 |
+| 7 | "These findings suggest statistically significant regional variation that may be related to cultural, economic, or historical factors" | Correlational | Indirect | 5 | 권장 |
 
-### 가장 위험한 Overclaim Top 3
+### 2.2 Overclaiming 현황
 
-#### 1. "These findings suggest meaningful regional variation in personality traits that may reflect cultural, economic, or historical factors unique to each state." (Line 36)
+- **고위험 (Risk ≥ 7):** 0개
+- **중위험 (Risk 4-6):** 2개
+- **저위험 (Risk 1-3):** 5개
 
-**문제점:**
-- "meaningful"라는 표현이 과도하게 강함 (통계적 유의성과 실질적 의미를 혼동)
-- "may reflect"는 적절하지만, "unique to each state"는 과도한 주장 (다른 요인 가능성 배제)
-- 인과적 해석의 위험 (상관 데이터로부터 인과 추론 시도)
+### 2.3 가장 위험한 Overclaim Top 3
 
-**수정 방법:**
-- "meaningful" 제거 또는 "statistically significant"로 대체
-- "unique to each state" 제거 또는 "potentially related to"로 완화
-- 제한점 명시 강화
+#### 1. "suggesting lower levels of emotional instability in this sample"
+- **위험도:** 5/10
+- **문제점:** "emotional instability"는 Neuroticism의 해석이지만, 자기보고 점수가 실제 정서적 안정성을 직접 반영한다고 단정하기 어려움
+- **수정안:** "which corresponds to lower self-reported neuroticism scores"
 
-**수정안:**
-"These findings indicate statistically significant regional variation in personality traits that could potentially be related to cultural, economic, or historical factors. However, alternative explanations, such as selective migration or sampling biases, cannot be ruled out."
+#### 2. "regional variation that may be related to cultural, economic, or historical factors"
+- **위험도:** 5/10
+- **문제점:** 문화적/경제적/역사적 요인과의 관계는 추측이며, 데이터로 직접 검증되지 않음
+- **수정안:** "regional variation in self-reported personality traits. The sources of this variation remain unclear and could potentially include cultural factors, though alternative explanations such as sampling differences cannot be excluded."
 
----
-
-#### 2. "suggesting greater emotional stability" (Line 34)
-
-**문제점:**
-- Neuroticism 점수가 낮다는 것과 "emotional stability"는 다른 개념 (역방향 해석이지만 과도한 추론)
-- 간접적 추론을 직접적 결론처럼 서술
-
-**수정 방법:**
-- "greater emotional stability"를 "lower neuroticism scores"로 먼저 명시
-- 추론적 해석을 더 보수적으로 표현
-
-**수정안:**
-"Florida showed significantly lower Neuroticism (CR = -3.22), which corresponds to lower neuroticism scores that may reflect greater emotional stability."
-
----
-
-#### 3. "suggesting substantial conceptual overlap between these constructs" (Line 26)
-
-**문제점:**
-- "substantial"이 다소 강한 표현 (r = .79는 높지만 "substantial"은 주관적)
-- 상관계수만으로 "conceptual overlap"을 주장하는 것은 약간 과도
-
-**수정 방법:**
-- "substantial"을 더 객관적인 표현으로 대체
-- 상관계수 값에 기반한 해석으로 완화
-
-**수정안:**
-"suggesting a strong positive association (r = .79) that may reflect conceptual overlap between these constructs."
+#### 3. "lower scores on the Honesty-Humility composite"
+- **위험도:** 3/10
+- **문제점:** 경미하지만, H-H가 낮다는 것이 실제로 "덜 정직하다"는 의미로 오해될 수 있음
+- **수정안:** "lower scores on the self-reported Honesty-Humility composite scale"
 
 ---
 
 ## 3. 종합 권고
 
-### 우선순위 높음 (Must Fix)
+### Must Fix (반드시 수정)
 
-1. **다중 비교 보정 명시**
-   - 7개 척도 × 9개 주 = 63개 비교에 대한 명시적 보정 방법 기술
-   - CR > 3.0 기준의 통계적 근거 강화
+- [ ] **Results - Florida 문장:** "suggesting lower levels of emotional instability" → "which corresponds to lower neuroticism scores"
+- [ ] **Results - 마지막 문단:** 대안 설명을 더 강조하고, 인과적 해석 가능성 명시적 배제
 
-2. **재현성 정보 추가**
-   - Python/패키지 버전 명시
-   - 코드/데이터 공개 여부 명시
-   - 랜덤 시드 설정 여부
+### Should Fix (권장 수정)
 
-3. **Results의 "meaningful" 표현 수정**
-   - "statistically significant"로 대체
-   - 제한점 강화
+- [ ] **Method - Participants:** 데이터 수집 기간 추가
+- [ ] **Method - Data Analysis:** 코드 공개 URL 또는 공개 계획 명시
+- [ ] **Method - Measures:** 척도 신뢰도 보고 또는 기존 문헌 인용
+- [ ] **Results - State-Level:** "self-reported" 명시 추가
 
----
+### Nice to Have (선택적 개선)
 
-### 우선순위 중간 (Should Fix)
-
-1. **척도 신뢰도 보고**
-   - Cronbach's α 또는 다른 적절한 신뢰도 지표 추가
-
-2. **효과 크기 보고**
-   - State-level 차이의 실질적 의미 평가를 위한 효과 크기 추가
-
-3. **혼란변수 통제 논의**
-   - State-level 분석에서 인구통계학적 변수 통제 여부 명시
-
----
-
-### 우선순위 낮음 (Nice to Have)
-
-1. **검정력 분석 추가**
-   - 사전 검정력 분석 결과 또는 선행 연구 기반 근거
-
-2. **외부 검증 논의**
-   - 결과의 일반화 가능성 및 제한점 강화
-
-3. **정규성 가정 검증**
-   - 가정 검증 결과 또는 비모수적 대안 고려 여부
+- [ ] **Method - Participants:** 인구통계적 특성 기술통계 추가
+- [ ] **Method - Data Analysis:** 정규성 가정 관련 설명 추가
+- [ ] **Results - Correlations:** p값 추가 (예: r = .79, p < .001)
 
 ---
 
 ## 4. 수정 전후 비교
 
-| 위치 | 원문 | 수정안 | 수정 이유 |
-|------|------|--------|-----------|
-| Results, L.36 | "meaningful regional variation" | "statistically significant regional variation" | "meaningful"는 주관적, 통계적 유의성과 구분 |
-| Results, L.36 | "unique to each state" | "potentially related to" | 과도한 주장 완화, 대안 설명 가능성 인정 |
-| Results, L.34 | "suggesting greater emotional stability" | "which corresponds to lower neuroticism scores that may reflect greater emotional stability" | 간접적 추론을 더 명확하게 표현 |
-| Results, L.26 | "substantial conceptual overlap" | "a strong positive association (r = .79) that may reflect conceptual overlap" | 객관적 수치 기반 표현으로 완화 |
-| Methods, Data Analysis | CR 기준 설명 | 다중 비교 보정 명시 추가 | 63개 비교에 대한 통계적 통제 명확화 |
-| Methods, Data Analysis | Python 사용 언급 | 버전 및 패키지 정보 추가 | 재현성 향상 |
+| 위치 | 원문 | 수정안 | 이유 |
+|------|------|--------|------|
+| Results §3 | "suggesting lower levels of emotional instability in this sample" | "which corresponds to lower self-reported neuroticism scores" | 자기보고 점수 ≠ 실제 정서 상태 |
+| Results §3 | "indicating more progressive ideological orientation and lower scores on the Honesty-Humility composite" | "indicating lower scores on the self-reported Ideology (more progressive orientation) and Honesty-Humility composite scales" | self-reported 명시 |
+| Results §3 | "regional variation in personality traits that may be related to cultural, economic, or historical factors" | "regional variation in self-reported personality traits that could potentially be related to cultural, economic, or historical factors, although the present data cannot establish such links" | 인과/기전 추론 완화 |
+| Method §1 | "We recruited participants through the SAPA..." | "We recruited participants through the SAPA online platform (Condon & Revelle, 2014) between 2013 and 2017." | 수집 기간 추가 |
 
 ---
 
-## 5. 추가 권고사항
+## 5. 종합 평가
 
-### Methods 섹션
-- 데이터 수집 기간 명시 (가능하면)
-- 온라인 샘플의 특성 및 제한점 명시
-- 최소 N=100 기준 선택 근거 명확화
+### 전반적 품질: **양호 (Good)**
 
-### Results 섹션
-- Table 1에 신뢰도 계수 추가 고려
-- 상관분석에서 pairwise N 보고 고려
-- State-level 차이의 효과 크기 보고 고려
+**강점:**
+- APA 형식 준수
+- 구체적인 통계값 제시
+- 다중 비교 보정 설명
+- Limitations 섹션 포함
+- 대부분 보수적인 표현 사용 ("suggesting", "may", "is associated with")
 
-### 전체
-- 일관된 용어 사용 확인 (예: "Honesty-Humility" vs "H-H")
-- Figure 참조 일관성 확인 (Figure 1, Figure 2 등)
+**개선 필요:**
+- 일부 문장에서 self-reported 점수를 실제 특성처럼 기술
+- 지역 차이의 원인에 대한 추측이 데이터 범위를 약간 초과
+- 척도 신뢰도 미보고
+
+**결론:**
+초안의 전반적인 품질은 양호하며, 대부분의 문제점은 경미합니다. 위의 Must Fix 항목 2개와 Should Fix 항목 4개를 반영하면 Nature 수준의 리뷰에도 대응할 수 있는 수준이 될 것입니다.

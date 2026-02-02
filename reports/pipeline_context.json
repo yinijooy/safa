@@ -6,9 +6,10 @@
     "viz",
     "state_analysis",
     "writing",
+    "proofreading",
     "revision",
     "done"
   ],
-  "completed_steps": ["scan", "preprocess", "viz", "state_analysis", "writing", "revision"],
-  "last_updated": "2024-12-19"
+  "completed_steps": ["scan", "preprocess", "viz", "state_analysis", "writing", "proofreading", "revision"],
+  "last_updated": "2025-02-02"
 }

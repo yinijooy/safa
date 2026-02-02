@@ -1,203 +1,75 @@
 {
   "step": "viz",
   "notebook": "03_visualization.ipynb",
-  "n_respondents": 23647,
-  "scales_analyzed": [
-    "NEO_Openness",
-    "NEO_Conscientiousness",
-    "NEO_Extraversion",
-    "NEO_Agreeableness",
-    "NEO_Neuroticism",
-    "Ideology",
-    "Honesty_Humility"
+  "timestamp": "2025-02-02",
+  "figures": [
+    {
+      "path": "reports/figures/correlation_matrix.png",
+      "description": "7개 척도 간 상관행렬 히트맵"
+    },
+    {
+      "path": "reports/figures/big_five_distributions.png",
+      "description": "Big Five 5개 척도 분포 히스토그램"
+    },
+    {
+      "path": "reports/figures/ideology_hh_distributions.png",
+      "description": "Ideology, Honesty-Humility 분포 히스토그램"
+    }
   ],
   "correlation_matrix": {
-    "NEO_Openness": {
-      "NEO_Openness": 1.0,
-      "NEO_Conscientiousness": 0.008,
-      "NEO_Extraversion": 0.099,
-      "NEO_Agreeableness": 0.071,
-      "NEO_Neuroticism": -0.046,
-      "Ideology": -0.573,
-      "Honesty_Humility": 0.03
-    },
-    "NEO_Conscientiousness": {
-      "NEO_Openness": 0.008,
-      "NEO_Conscientiousness": 1.0,
-      "NEO_Extraversion": 0.121,
-      "NEO_Agreeableness": 0.194,
-      "NEO_Neuroticism": -0.232,
-      "Ideology": 0.174,
-      "Honesty_Humility": 0.266
-    },
-    "NEO_Extraversion": {
-      "NEO_Openness": 0.099,
-      "NEO_Conscientiousness": 0.121,
-      "NEO_Extraversion": 1.0,
-      "NEO_Agreeableness": 0.067,
-      "NEO_Neuroticism": -0.238,
-      "Ideology": 0.056,
-      "Honesty_Humility": -0.038
-    },
-    "NEO_Agreeableness": {
-      "NEO_Openness": 0.071,
-      "NEO_Conscientiousness": 0.194,
-      "NEO_Extraversion": 0.067,
-      "NEO_Agreeableness": 1.0,
-      "NEO_Neuroticism": -0.085,
-      "Ideology": 0.052,
-      "Honesty_Humility": 0.791
-    },
-    "NEO_Neuroticism": {
-      "NEO_Openness": -0.046,
-      "NEO_Conscientiousness": -0.232,
-      "NEO_Extraversion": -0.238,
-      "NEO_Agreeableness": -0.085,
-      "NEO_Neuroticism": 1.0,
-      "Ideology": -0.048,
-      "Honesty_Humility": -0.118
-    },
-    "Ideology": {
-      "NEO_Openness": -0.573,
-      "NEO_Conscientiousness": 0.174,
-      "NEO_Extraversion": 0.056,
-      "NEO_Agreeableness": 0.052,
-      "NEO_Neuroticism": -0.048,
-      "Ideology": 1.0,
-      "Honesty_Humility": 0.097
-    },
-    "Honesty_Humility": {
-      "NEO_Openness": 0.03,
-      "NEO_Conscientiousness": 0.266,
-      "NEO_Extraversion": -0.038,
-      "NEO_Agreeableness": 0.791,
-      "NEO_Neuroticism": -0.118,
-      "Ideology": 0.097,
-      "Honesty_Humility": 1.0
-    }
+    "scales": ["Openness", "Conscientiousness", "Extraversion", "Agreeableness", "Neuroticism", "Ideology", "Honesty-Humility"],
+    "notable_correlations": [
+      {
+        "pair": ["Agreeableness", "Honesty-Humility"],
+        "r": 0.79,
+        "direction": "positive",
+        "interpretation": "강한 양의 상관 - 구성 개념적 유사성"
+      },
+      {
+        "pair": ["Openness", "Ideology"],
+        "r": -0.57,
+        "direction": "negative",
+        "interpretation": "개방성이 높을수록 진보적 (낮은 보수 점수)"
+      },
+      {
+        "pair": ["Conscientiousness", "Honesty-Humility"],
+        "r": 0.27,
+        "direction": "positive",
+        "interpretation": "중간 양의 상관"
+      },
+      {
+        "pair": ["Extraversion", "Neuroticism"],
+        "r": -0.24,
+        "direction": "negative",
+        "interpretation": "외향성이 높을수록 신경증 낮음"
+      },
+      {
+        "pair": ["Conscientiousness", "Neuroticism"],
+        "r": -0.23,
+        "direction": "negative",
+        "interpretation": "성실성이 높을수록 신경증 낮음"
+      },
+      {
+        "pair": ["Conscientiousness", "Agreeableness"],
+        "r": 0.19,
+        "direction": "positive",
+        "interpretation": "약한 양의 상관"
+      }
+    ]
   },
-  "correlations_ranked": [
-    {
-      "scale1": "A",
-      "scale2": "H-H",
-      "r": 0.7913070267187094
-    },
-    {
-      "scale1": "O",
-      "scale2": "Ideology",
-      "r": -0.5729702588167006
-    },
-    {
-      "scale1": "C",
-      "scale2": "H-H",
-      "r": 0.2658847975146577
-    },
-    {
-      "scale1": "E",
-      "scale2": "N",
-      "r": -0.2377345648091647
-    },
-    {
-      "scale1": "C",
-      "scale2": "N",
-      "r": -0.23245699866455888
-    },
-    {
-      "scale1": "C",
-      "scale2": "A",
-      "r": 0.19374064456641815
-    },
-    {
-      "scale1": "C",
-      "scale2": "Ideology",
-      "r": 0.17384254016229586
-    },
-    {
-      "scale1": "C",
-      "scale2": "E",
-      "r": 0.12130852416288493
-    },
-    {
-      "scale1": "N",
-      "scale2": "H-H",
-      "r": -0.11787350957482504
-    },
-    {
-      "scale1": "O",
-      "scale2": "E",
-      "r": 0.09912163912456058
-    },
-    {
-      "scale1": "Ideology",
-      "scale2": "H-H",
-      "r": 0.09722568327761683
-    },
-    {
-      "scale1": "A",
-      "scale2": "N",
-      "r": -0.08485739893572934
-    },
-    {
-      "scale1": "O",
-      "scale2": "A",
-      "r": 0.07135103912238762
-    },
-    {
-      "scale1": "E",
-      "scale2": "A",
-      "r": 0.06685285263601388
-    },
-    {
-      "scale1": "E",
-      "scale2": "Ideology",
-      "r": 0.05646917593196571
-    },
-    {
-      "scale1": "A",
-      "scale2": "Ideology",
-      "r": 0.052159291614908315
-    },
-    {
-      "scale1": "N",
-      "scale2": "Ideology",
-      "r": -0.047946308394405474
-    },
-    {
-      "scale1": "O",
-      "scale2": "N",
-      "r": -0.04596272007720451
-    },
-    {
-      "scale1": "E",
-      "scale2": "H-H",
-      "r": -0.037661067756396535
-    },
-    {
-      "scale1": "O",
-      "scale2": "H-H",
-      "r": 0.03038451241387852
-    },
-    {
-      "scale1": "O",
-      "scale2": "C",
-      "r": 0.008314646696254514
-    }
-  ],
-  "major_correlations": [
-    {
-      "scale1": "A",
-      "scale2": "H-H",
-      "r": 0.7913070267187094
-    },
-    {
-      "scale1": "O",
-      "scale2": "Ideology",
-      "r": -0.5729702588167006
-    }
-  ],
-  "figures_generated": [
-    "reports/figures/correlation_matrix.png",
-    "reports/figures/big_five_distributions.png",
-    "reports/figures/ideology_hh_distributions.png"
+  "scale_n": {
+    "Openness": 23399,
+    "Conscientiousness": 23417,
+    "Extraversion": 23357,
+    "Agreeableness": 23437,
+    "Neuroticism": 23371,
+    "Ideology": 11825,
+    "Honesty-Humility": 12828
+  },
+  "key_findings": [
+    "가장 강한 양의 상관: Agreeableness - Honesty-Humility (r = 0.79)",
+    "가장 강한 음의 상관: Openness - Ideology (r = -0.57)",
+    "Big Five는 정규분포에 가까운 형태, Ideology/H-H는 z-score 기반으로 평균 0 근처",
+    "Pairwise N은 척도별 결측 패턴에 따라 다름 (planned missingness)"
   ]
 }

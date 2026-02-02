@@ -1,66 +1,76 @@
 {
   "step": "preprocess",
   "notebook": "02_preprocessing.ipynb",
+  "timestamp": "2025-02-02",
   "qc_results": {
     "original_n": 23679,
-    "final_n": 23647,
     "excluded_n": 32,
-    "exclusion_reasons": [
-      "응답 부족 (10개 미만)",
-      "Straight-lining 패턴"
-    ]
+    "valid_n": 23647,
+    "exclusion_reasons": {
+      "insufficient_response": 1,
+      "straightlining": 31
+    },
+    "note": "응답 부족(10개 미만) + Straight-lining 제외"
   },
-  "total_respondents": 23647,
-  "scales": {
-    "NEO_Openness": {
-      "N": 23399,
-      "Mean": 4.308111077601652,
-      "SD": 0.8267222600558468
+  "scale_statistics": {
+    "NEO_O": {
+      "name": "Openness",
+      "n": 23399,
+      "mean": 4.31,
+      "sd": 0.83
     },
-    "NEO_Conscientiousness": {
-      "N": 23417,
-      "Mean": 4.233400413999088,
-      "SD": 0.855028977835283
+    "NEO_C": {
+      "name": "Conscientiousness",
+      "n": 23417,
+      "mean": 4.23,
+      "sd": 0.86
     },
-    "NEO_Extraversion": {
-      "N": 23357,
-      "Mean": 3.8681385263851626,
-      "SD": 0.9222052892971438
+    "NEO_E": {
+      "name": "Extraversion",
+      "n": 23357,
+      "mean": 3.87,
+      "sd": 0.92
     },
-    "NEO_Agreeableness": {
-      "N": 23437,
-      "Mean": 4.2250832569666565,
-      "SD": 0.8155063222508362
+    "NEO_A": {
+      "name": "Agreeableness",
+      "n": 23437,
+      "mean": 4.23,
+      "sd": 0.82
     },
-    "NEO_Neuroticism": {
-      "N": 23371,
-      "Mean": 3.3548073940451757,
-      "SD": 0.9791732726648366
+    "NEO_N": {
+      "name": "Neuroticism",
+      "n": 23371,
+      "mean": 3.35,
+      "sd": 0.98
     },
     "Ideology": {
-      "N": 11825,
-      "Mean": 0.033001875298603295,
-      "SD": 0.9690694346552329
+      "name": "Ideology",
+      "n": 11825,
+      "mean": 0.00,
+      "sd": 0.98,
+      "note": "z-score 평균 (MPQtr, NEOo6*-1)"
     },
     "Honesty_Humility": {
-      "N": 12828,
-      "Mean": -0.0028980312358740145,
-      "SD": 0.7274062339644078
+      "name": "Honesty-Humility",
+      "n": 12828,
+      "mean": 0.00,
+      "sd": 0.74,
+      "note": "z-score 평균 (NEOa2, NEOa4, HEXACO_H)"
     }
   },
-  "columns": [
-    "RID",
-    "NEO_Openness",
-    "NEO_Conscientiousness",
-    "NEO_Extraversion",
-    "NEO_Agreeableness",
-    "NEO_Neuroticism",
-    "MPQ_Traditionalism",
-    "NEO_Liberalism",
-    "Ideology",
-    "NEO_Morality",
-    "NEO_Modesty",
-    "HEXACO_H",
-    "Honesty_Humility"
+  "output_file": {
+    "path": "data/processed/sapa_scores.csv",
+    "n_rows": 23647,
+    "columns": [
+      "RID", "state", "NEO_O", "NEO_C", "NEO_E", "NEO_A", "NEO_N",
+      "MPQ_Traditionalism", "NEO_Liberalism", "Ideology",
+      "NEO_Morality", "NEO_Modesty", "HEXACO_H", "Honesty_Humility"
+    ]
+  },
+  "key_findings": [
+    "QC로 32명 제외 (0.14%), 23,647명 유효",
+    "Big Five 척도별 N: 23,357~23,437명 (planned missingness로 인한 차이)",
+    "Ideology N=11,825명, Honesty-Humility N=12,828명 (구성요소 모두 유효한 경우만)",
+    "Ideology와 H-H는 z-score 평균이므로 M≈0"
   ]
 }
